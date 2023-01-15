@@ -1,57 +1,33 @@
 let quieresViajar = prompt("pensando en viajar si o no");
 
+// función principal que ejecuta el simulador de viaje
 if (quieresViajar == "si") {
     siViajar();
 } else {
     finalizar();
 }
 
-class Viaje {
-    constructor(destino, adultos, ninios, dias) {
-        (this.destino = destino),
-            (this.adultos = adultos),
-            (this.ninios = ninios),
-            (this.dias = dias);
-    }
-
-    mostrarInformacionDeViaje() {
-        console.log(
-            `datos capturados: destino/${this.destino}} adultos/${this.adultos} niños/${this.ninios} días/${this.dias}`
-        );
-    }
-
-    calcularValorViaje() {
-        let valor = 0;
-        switch (this.destino) {
-            case "1":
-                valor =
-                    (this.adultos * 1000000 + this.ninios * 500000) * this.dias;
-                break;
-            case "2":
-                valor =
-                    (this.adultos * 1000000 + this.ninios * 500000) * this.dias;
-                break;
-            default:
-                console.log("Opcion no Valida");
-                break;
-        }
-        console.log(`Su viaje cuesta: ${valor}`);
-    }
-
-    calcularPlanDePago(cuotas) {}
+// Clase que guarda los datos para el viaje
+function Viaje(destino, adultos, ninios, dias){
+    this.destino = destino;
+    this.adultos = adultos;
+    this.ninios = ninios;
+    this.dias = dias;
 }
 
+// Proceso principal viajar
 function siViajar() {
-    // console.log("Busquemos tu destino");
-    // alert("Busquemos tu destino");
     mostrarMenu();
 }
 
+// Proceso finalizar el programa
 function finalizar() {
     console.log("Vuelve pronto");
     alert("Vuelva pronto");
 }
 
+// Capturar los datos del viaje
+// destino, adultos, niños y días
 function capturarDatosDelViaje() {
     // agregar destinos nacionales e internacionales con un menú
     let destino = prompt(`Ingresa tu destino
@@ -70,13 +46,9 @@ function capturarDatosDelViaje() {
         cantidadDeDias
     );
     return miViaje;
-    // mostrarDatosDeViaje(destino, cantidadDeAdultos, cantidadDeNinios, cantidadDeDias);
 }
 
-// function mostrarDatosDeViaje(destino, cantidadDeAdultos, cantidadDeNinios, cantidadDeDias){
-//     console.log(`datos capturados: destino/${destino} adultos/${cantidadDeAdultos} niños/${cantidadDeNinios} días/${cantidadDeDias}`);
-// }
-
+// Menú de la aplicación
 function mostrarMenu() {
     let mostrarMenu = true;
     let viajeCapturado;
@@ -107,24 +79,81 @@ function mostrarMenu() {
     } while (mostrarMenu);
 }
 
+// Mostrar resumen de viaje.  
+// Ejecuta las funciones mostrarInformacionDeViaje y calcularValorViaje
 function mostrarResumenDeViaje(viaje) {
     if (viaje === null || viaje === undefined) {
         alert("No has creado tu viaje, ve a la opción Crea tu viaje");
     } else {
-        viaje.mostrarInformacionDeViaje();
-        viaje.calcularValorViaje();
+        mostrarInformacionDeViaje(viaje);
+        calcularValorViaje(viaje);
     }
 }
 
+// Imprimir los datos del viaje en consola
+function mostrarInformacionDeViaje(viaje) {
+    console.clear();
+    console.group('Viaje');
+        console.table(
+            {
+                'Destino': viaje.destino, 
+                'Adultos': viaje.adultos,
+                'Niños': viaje.ninios,
+                'Dias': viaje.dias
+            });
+    console.groupEnd('Viaje');
+}
+
+// Calcular el valor del viaje según los datos ingresados
+// adultos, niños y días
+function calcularValorViaje(viaje) {
+    switch (viaje.destino) {
+        case "1": // Cartagena
+            viaje.valor = ((viaje.adultos * 450000) + (viaje.ninios * 300000)) * viaje.dias;
+            break;
+        case "2": // Cali
+            viaje.valor = ((viaje.adultos * 200000) + (viaje.ninios * 180000)) * viaje.dias;
+            break;
+        case "3": // Medellin
+            viaje.valor = ((viaje.adultos * 280000) + (viaje.ninios * 200000)) * viaje.dias;
+            break;
+        case "4": // Santa Marta
+            viaje.valor = ((viaje.adultos * 600000) + (viaje.ninios * 450000)) * viaje.dias;
+            break;
+        default:
+            console.log("Opcion no Valida");
+            break;
+    }
+
+    console.log(`El valor de su viaje es: COP ${viaje.valor}`);
+    alert(`El valor de su viaje es: COP ${viaje.valor}`);
+}
+
+// Calcular las cuotas a pagar del viaje
 function generarPlanDePago(viaje) {
     if (viaje === null || viaje === undefined) {
         alert("No has creado tu viaje, ve a la opción Crea tu viaje");
     } else {
-        // capturar a cuantas cuotas diferir el viaje
-        let cuotasADiferirElPago = parseInt(
-            prompt("¿A cuantas cuotas quieres pagar tu viaje?")
-        );
-        // for para imprimir cuotas del viaje
-        viaje.calcularPlanDePago(cuotasADiferirElPago);
+
+        let cuotasADiferirElPago = 1;
+
+        do {
+            // capturar a cuantas cuotas diferir el viaje
+            cuotasADiferirElPago = parseInt(prompt("¿A cuantas cuotas quieres pagar tu viaje?"));
+        } while(cuotasADiferirElPago > 12)
+
+        // verificar que el valor del viaje si se calculó
+        if(viaje.valor === null || viaje.valor === undefined) {
+            alert("Para conocer el valor de tu viaje, debes ir a la opción 2 Resumen del viaje");
+        }
+        else {
+            // calcular valor de la cuota
+            const valorDeMiCuota = viaje.valor / cuotasADiferirElPago
+
+            // ciclo para imprimir cuotas del viaje
+            for (let miCuota = 1; miCuota <= cuotasADiferirElPago; miCuota++) {
+                console.log(`Su cuota ${miCuota} será de COP ${valorDeMiCuota}`)
+            }
+        }
     }
 }
