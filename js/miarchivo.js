@@ -77,7 +77,6 @@ const viaje4 = new Viaje(4, "Medellin", 4, 1, 4);
 
 // Crear un areglo de objetos tipo viaje
 const viajes = [viaje1, viaje2, viaje3, viaje4];
-//             [   0  ,   1   ,   2   ,   3   ];
 
 let quieresViajar = prompt("pensando en viajar si o no");
 
@@ -133,6 +132,7 @@ function mostrarMenu() {
         2 - Resumen del viaje
         3 - Plan de pago
         4 - Reservar viaje
+        5 - Mostrar viajes por ciudad
         0 - Salir del menu`);
         switch (opcionMenu) {
             case "1":
@@ -156,6 +156,9 @@ function mostrarMenu() {
             case "4":
                 reservarViaje(viajeCapturado);
                 break;
+            case "5":
+                filtrarViajes();                
+                break; 
             case "0":
                 finalizar();
                 mostrarMenu = false;
@@ -181,10 +184,10 @@ function mostrarResumenDeViaje(viaje) {
 // agregar un viaje recien capturado al arreglo de los viajes
 function reservarViaje(viaje) {
     const reservar = prompt ('Quire realizar una reserva si o no');
-    if (reservar == "si") {
+    if (reservar === "si") {
         viajes.push(viaje)
     }else{
-        alert ('Regrese a la opcion realizar crear viaje')
+        alert ('Vuelve al menu inicial y crea tu viaje')
     } 
     mostrarViajesReservados(viajes);
 }
@@ -194,5 +197,24 @@ function mostrarViajesReservados(viajes) {
     console.log("Los viajes reservados son:");
     for (let viaje of viajes) {
         viaje.mostrarInformacion();
+    }
+}
+
+function filtrarViajes() {
+    const ciudad = prompt(`¿Por qué ciudad quiere hacer el filtro?
+        Cartagena
+        Cali
+        Medellin
+        Santa Marta`);
+
+    const viajesPorCiudad = viajes.filter((viaje) => viaje.destino === ciudad);
+    
+    if (viajesPorCiudad.length === 0) {
+        console.log(`No existen viajes a la ciudad ${ciudad}`);
+    } else {
+        console.log("El resultado de su busqueda es:");
+        for (let viaje of viajesPorCiudad) {
+            viaje.mostrarInformacion();
+        }
     }
 }
