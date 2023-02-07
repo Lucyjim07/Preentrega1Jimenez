@@ -57,7 +57,7 @@ class Viaje {
 
         // verificar que el valor del viaje si se calculó
         if (this.valor === null || this.valor === undefined) {
-            this.calcularValorViaje();
+            this.calcularValor();
         }
         // calcular valor de la cuota
         const valorDeMiCuota = this.valor / cuotasADiferirElPago;
@@ -66,6 +66,10 @@ class Viaje {
         for (let miCuota = 1; miCuota <= cuotasADiferirElPago; miCuota++) {
             console.log(`Su cuota ${miCuota} será de COP ${valorDeMiCuota}`);
         }
+    }
+
+    static fromJSON(serializedJson) {
+        return Object.assign(new Viaje(), JSON.parse(serializedJson))
     }
 }
 
@@ -78,25 +82,25 @@ const viaje4 = new Viaje(4, "Medellin", 4, 1, 4);
 // Crear un areglo de objetos tipo viaje
 const viajes = [viaje1, viaje2, viaje3, viaje4];
 
-let quieresViajar = prompt("pensando en viajar si o no");
+// let quieresViajar = prompt("pensando en viajar si o no");
 
 // función principal que ejecuta el simulador de viaje
-if (quieresViajar == "si") {
-    siViajar();
-} else {
-    finalizar();
-}
+// if (quieresViajar == "si") {
+//     siViajar();
+// } else {
+//     finalizar();
+// }
 
 // Proceso principal viajar
-function siViajar() {
-    mostrarMenu();
-}
+// function siViajar() {
+//     mostrarMenu();
+// }
 
 // Proceso finalizar el programa
-function finalizar() {
-    console.log("Vuelve pronto");
-    alert("Vuelva pronto");
-}
+// function finalizar() {
+//     console.log("Vuelve pronto");
+//     alert("Vuelva pronto");
+// }
 
 // Capturar los datos del viaje
 // destino, adultos, niños y días
@@ -217,4 +221,30 @@ function filtrarViajes() {
             viaje.mostrarInformacion();
         }
     }
+}
+
+
+
+// obtener elementos
+
+let btnCapturarViaje = document.getElementById("btnCapturarViaje");
+btnCapturarViaje.addEventListener("click", () => {
+    capturarViaje();
+});
+
+function capturarViaje() {
+    let txtDestino = document.getElementById("txtDestino");
+    let txtAdultos = document.getElementById("txtAdultos");
+    let txtNinios = document.getElementById("txtNinios");
+    let txtDias = document.getElementById("txtDias");
+    
+    const miViaje = new Viaje(
+        viajes.length + 1,
+        txtDestino.value,
+        parseInt(txtAdultos.value),
+        parseInt(txtNinios.value),
+        parseInt(txtDias.value)
+    )
+    
+    localStorage.setItem("miViaje", JSON.stringify(miViaje));
 }
