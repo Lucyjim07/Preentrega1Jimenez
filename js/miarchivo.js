@@ -41,7 +41,6 @@ class Viaje {
         }
 
         console.log(`El valor de su viaje es: COP ${this.valor}`);
-        alert(`El valor de su viaje es: COP ${this.valor}`);
     }
 
     // Calcular las cuotas a pagar del viaje
@@ -73,6 +72,10 @@ class Viaje {
     }
 }
 
+// constantes
+const LISTA_VIAJES = "viajes";
+const MI_VIAJE = "miViaje";
+
 // Instanciación de objetos
 const viaje1 = new Viaje(1, "Cartagena", 2, 1, 3);
 const viaje2 = new Viaje(2, "Cali", 3, 2, 3);
@@ -81,6 +84,9 @@ const viaje4 = new Viaje(4, "Medellin", 4, 1, 4);
 
 // Crear un areglo de objetos tipo viaje
 const viajes = [viaje1, viaje2, viaje3, viaje4];
+
+// Guardar viajes en localStorage
+localStorage.setItem(LISTA_VIAJES, JSON.stringify(viajes));
 
 // let quieresViajar = prompt("pensando en viajar si o no");
 
@@ -225,13 +231,49 @@ function filtrarViajes() {
 
 
 
-// obtener elementos
 
+
+
+
+
+// obtener elementos
 let btnCapturarViaje = document.getElementById("btnCapturarViaje");
+let btnMostrarResumenViaje = document.getElementById("btnMostrarResumenViaje");
+let btnPlanPago = document.getElementById("btnPlanPago");
+
+
+
+
+
+
+
+
+
+
+
+
+// agregar eventos a botones
 btnCapturarViaje.addEventListener("click", () => {
     capturarViaje();
 });
 
+btnMostrarResumenViaje.addEventListener("click", () => {
+    mostrarResumenViajeHtml();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+// funciones de los botones
 function capturarViaje() {
     let txtDestino = document.getElementById("txtDestino");
     let txtAdultos = document.getElementById("txtAdultos");
@@ -246,5 +288,107 @@ function capturarViaje() {
         parseInt(txtDias.value)
     )
     
-    localStorage.setItem("miViaje", JSON.stringify(miViaje));
+    localStorage.setItem(MI_VIAJE, JSON.stringify(miViaje));
+
+    let resumenViaje = document.getElementById("resumenViaje");
+    resumenViaje.innerHTML = "";
+
+    let planPago = document.getElementById("planPago");
+    planPago.innerHTML = "";
+
 }
+
+function mostrarResumenViajeHtml() {
+    let divResumenViaje = document.getElementById("resumenViaje");
+
+    const miViajeRecuperado = JSON.parse(localStorage.getItem(MI_VIAJE));
+    const miViaje = new Viaje(miViajeRecuperado.id,
+        miViajeRecuperado.destino,
+        miViajeRecuperado.adultos,
+        miViajeRecuperado.ninios,
+        miViajeRecuperado.dias);
+    
+
+    if(miViaje === null || miViaje === undefined){
+        alert("Vuelve a la opción crea tu viaje")
+    } else {
+        divResumenViaje.innerHTML = `
+        <div class="card mb-3" style="max-width: 480px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="./img/avion.png" class="img-fluid rounded-start" alt="imagen-destino">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h4 class="card-title">Disfruta tu viaje a ${miViaje.destino}</h4>
+                        <p class="card-text">Tu paquete de viaje es el siguiente</p>
+                        <p class="card-text mb-1">Adultos: <span class="text-muted">${miViaje.adultos}</span></p>
+                        <p class="card-text mb-1">Niños: <span class="text-muted">${miViaje.ninios}</span></p>
+                        <p class="card-text mb-1">Días: <span class="text-muted">${miViaje.dias}</span></p>
+                        <a id="btnReservarViaje" href="#" class="btn btn-primary">Reserva tu viaje</a>
+                        <a id="btnPlanPago" href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#formularioGenerarPlanPago">Plan de pago</a>
+                    </div>
+                </div>
+            </div>
+        </div>`
+        ;
+
+        // boton para ver el plan de pago
+        let btnPlanPago = document.getElementById("btnPlanPago");
+        btnPlanPago.addEventListener("click", () => {
+            miViaje.calcularValor();
+            mostrarValorViajeModalHtml(miViaje.valor);
+        });
+
+        // boton para hacer la reserva del viaje
+
+    }
+}
+
+function mostrarValorViajeModalHtml(valorViaje) {
+    let divValorViaje = document.getElementById("valorViaje");
+
+    divValorViaje.innerHTML = `<p>El valor de su viaje es: COP ${valorViaje}.<br />
+    A cuantas cuotas quieres dividir tu viaje</p> `;
+}
+
+
+
+// function mostrarCuotasHtml() {
+//     let divPlanPago = document.getElementById("planPago");
+
+//     divPlanPago.innerHTML = `
+//         <table class="table">
+//             <thead>
+//                 <tr>
+//                     <th scope="col">#</th>
+//                     <th scope="col">Descripción</th>
+//                     <th scope="col">Valor</th>
+//                 </tr>
+//             </thead>
+//             <tbody>
+//                 <tr>
+//                     <th scope="row">1</th>
+//                     <td>Valor de la cuota 1</td>
+//                     <td>25.000</td>
+//                 </tr>
+//                 <tr>
+//                     <th scope="row">2</th>
+//                     <td>Valor de la cuota 2</td>
+//                     <td>25.000</td>
+//                 </tr>
+//                 <tr>
+//                     <th scope="row">3</th>
+//                     <td>Valor de la cuota 3</td>
+//                     <td>25.000</td>
+//                 </tr>
+//                 <tr>
+//                     <th scope="row"></th>
+//                     <td>Total</td>
+//                     <td>75.000</td>
+//                 </tr>
+//             </tbody>
+//         </table>
+//     `;
+// }
+

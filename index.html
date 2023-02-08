@@ -42,20 +42,29 @@
 
 
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formularioAgregarViaje">
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#formularioAgregarViaje">
             Crea tu viaje
         </button>
 
-        <!-- contenido -->
-        <ul>
-            <li>Resumen del viaje</li>
-            <li>Plan de pago</li>
-            <li>Reservar viaje</li>
-            <li>Mostrar viajes por ciudad</li>
-        </ul>
+        <button id="btnMostrarResumenViaje" type="button" class="btn btn-outline-info">
+            Mostrar resumen del viaje
+        </button>
 
-        <!-- seccion dinánica -->
-        <div id="" class="row"></div>
+        <!-- contenido -->
+        <!-- <h2>Crea tu viaje</h2> -->
+        <!-- <h2>Resumen del viaje</h2> -->
+        <!-- <h2>Plan de pago</h2> -->
+        <h2>Reservar viaje</h2>
+        <h2>Mostrar viajes por ciudad</h2>
+
+        <!-- Tarjeta de resumen de nuevo viaje -->
+        <div>
+            <h2 class="lead">Información del viaje</h2>
+            <div id="resumenViaje"></div>
+            <div id="planPago"></div>
+        </div>
+
+
 
 
         <!-- modal formulario para crear viaje -->
@@ -107,6 +116,33 @@
             </div>
         </div>
 
+        <!-- modal formulario para capturar cuotas de pago -->
+        <div id="formularioGenerarPlanPago" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Generar plan de pago</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="valorViaje"></div>
+                        <!-- <p>A cuantas cuotas quieres dividir el valor de tu viaje que es 1000000</p> -->
+                        <form action="">
+                            <div class="mb-3 row">
+                                <label for="txtCuotas" class="col-sm-2 col-form-label">Cuotas</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" id="txtCuotas">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button id="btnGenerarPlanPago" type="button" class="btn btn-primary">Generar plan de pago</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
