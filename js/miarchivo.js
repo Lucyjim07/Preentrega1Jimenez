@@ -44,27 +44,14 @@ class Viaje {
     }
 
     // Calcular las cuotas a pagar del viaje
-    generarPlanDePago() {
-        let cuotasADiferirElPago = 1;
-
-        do {
-            // capturar a cuantas cuotas diferir el viaje
-            cuotasADiferirElPago = parseInt(
-                prompt("¿A cuantas cuotas quieres pagar tu viaje?")
-            );
-        } while (cuotasADiferirElPago > 12);
+    generarPlanDePago(cuotasADiferirElPago) {
 
         // verificar que el valor del viaje si se calculó
         if (this.valor === null || this.valor === undefined) {
             this.calcularValor();
         }
         // calcular valor de la cuota
-        const valorDeMiCuota = this.valor / cuotasADiferirElPago;
-
-        // ciclo para imprimir cuotas del viaje
-        for (let miCuota = 1; miCuota <= cuotasADiferirElPago; miCuota++) {
-            console.log(`Su cuota ${miCuota} será de COP ${valorDeMiCuota}`);
-        }
+        this.valorCuota = this.valor / cuotasADiferirElPago;
     }
 
     static fromJSON(serializedJson) {
@@ -108,88 +95,88 @@ localStorage.setItem(LISTA_VIAJES, JSON.stringify(viajes));
 //     alert("Vuelva pronto");
 // }
 
-// Capturar los datos del viaje
-// destino, adultos, niños y días
-function capturarDatosDelViaje() {
-    // agregar destinos nacionales e internacionales con un menú
-    let destino = prompt(`Ingresa tu destino:
-        Cartagena 
-        Cali
-        Medellin
-        Santa Marta`);
-    let cantidadDeAdultos = parseInt(prompt("Cuantas adultos piensan viajar"));
-    let cantidadDeNinios = parseInt(prompt("Cuantas niños piensan viajar"));
-    let cantidadDeDias = parseInt(prompt("Cuantos días piensas viajar"));
+// // Capturar los datos del viaje
+// // destino, adultos, niños y días
+// function capturarDatosDelViaje() {
+//     // agregar destinos nacionales e internacionales con un menú
+//     let destino = prompt(`Ingresa tu destino:
+//         Cartagena 
+//         Cali
+//         Medellin
+//         Santa Marta`);
+//     let cantidadDeAdultos = parseInt(prompt("Cuantas adultos piensan viajar"));
+//     let cantidadDeNinios = parseInt(prompt("Cuantas niños piensan viajar"));
+//     let cantidadDeDias = parseInt(prompt("Cuantos días piensas viajar"));
 
-    const miViaje = new Viaje(
-        viajes.length + 1,
-        destino,
-        cantidadDeAdultos,
-        cantidadDeNinios,
-        cantidadDeDias
-    );
+//     const miViaje = new Viaje(
+//         viajes.length + 1,
+//         destino,
+//         cantidadDeAdultos,
+//         cantidadDeNinios,
+//         cantidadDeDias
+//     );
 
-    return miViaje;
-}
+//     return miViaje;
+// }
 
-// Menú de la aplicación
-function mostrarMenu() {
-    let mostrarMenu = true;
-    let viajeCapturado;
-    do {
-        let opcionMenu = prompt(`Ingrese la opción deseada
-        1 - Crea tu viaje
-        2 - Resumen del viaje
-        3 - Plan de pago
-        4 - Reservar viaje
-        5 - Mostrar viajes por ciudad
-        0 - Salir del menu`);
-        switch (opcionMenu) {
-            case "1":
-                viajeCapturado = capturarDatosDelViaje();
-                break;
-            case "2":
-                if(viajeCapturado === null || viajeCapturado === undefined){
-                    alert("No has creado tu viaje, ve a la opción Crea tu viaje");
-                } else {
-                    viajeCapturado.mostrarInformacion();
-                    viajeCapturado.calcularValor();
-                }
-                break;
-            case "3":
-                if(viajeCapturado === null || viajeCapturado === undefined){
-                    alert("No has creado tu viaje, ve a la opción Crea tu viaje");
-                } else {
-                    viajeCapturado.generarPlanDePago();
-                }
-                break;
-            case "4":
-                reservarViaje(viajeCapturado);
-                break;
-            case "5":
-                filtrarViajes();                
-                break; 
-            case "0":
-                finalizar();
-                mostrarMenu = false;
-                break;
-            default:
-                console.log("Opcion no Valida");
-                break;
-        }
-    } while (mostrarMenu);
-}
+// // Menú de la aplicación
+// function mostrarMenu() {
+//     let mostrarMenu = true;
+//     let viajeCapturado;
+//     do {
+//         let opcionMenu = prompt(`Ingrese la opción deseada
+//         1 - Crea tu viaje
+//         2 - Resumen del viaje
+//         3 - Plan de pago
+//         4 - Reservar viaje
+//         5 - Mostrar viajes por ciudad
+//         0 - Salir del menu`);
+//         switch (opcionMenu) {
+//             case "1":
+//                 viajeCapturado = capturarDatosDelViaje();
+//                 break;
+//             case "2":
+//                 if(viajeCapturado === null || viajeCapturado === undefined){
+//                     alert("No has creado tu viaje, ve a la opción Crea tu viaje");
+//                 } else {
+//                     viajeCapturado.mostrarInformacion();
+//                     viajeCapturado.calcularValor();
+//                 }
+//                 break;
+//             case "3":
+//                 if(viajeCapturado === null || viajeCapturado === undefined){
+//                     alert("No has creado tu viaje, ve a la opción Crea tu viaje");
+//                 } else {
+//                     viajeCapturado.generarPlanDePago();
+//                 }
+//                 break;
+//             case "4":
+//                 reservarViaje(viajeCapturado);
+//                 break;
+//             case "5":
+//                 filtrarViajes();                
+//                 break; 
+//             case "0":
+//                 finalizar();
+//                 mostrarMenu = false;
+//                 break;
+//             default:
+//                 console.log("Opcion no Valida");
+//                 break;
+//         }
+//     } while (mostrarMenu);
+// }
 
-// Mostrar resumen de viaje.
-// Ejecuta las funciones mostrarInformacionDeViaje y calcularValorViaje
-function mostrarResumenDeViaje(viaje) {
-    if (viaje === null || viaje === undefined) {
-        alert("No has creado tu viaje, ve a la opción Crea tu viaje");
-    } else {
-        viaje.mostrarInformacion();
-        viaje.calcularValor();
-    }
-}
+// // Mostrar resumen de viaje.
+// // Ejecuta las funciones mostrarInformacionDeViaje y calcularValorViaje
+// function mostrarResumenDeViaje(viaje) {
+//     if (viaje === null || viaje === undefined) {
+//         alert("No has creado tu viaje, ve a la opción Crea tu viaje");
+//     } else {
+//         viaje.mostrarInformacion();
+//         viaje.calcularValor();
+//     }
+// }
 
 // agregar un viaje recien capturado al arreglo de los viajes
 function reservarViaje(viaje) {
@@ -234,18 +221,11 @@ function filtrarViajes() {
 
 
 
-
-
 // obtener elementos
 let btnCapturarViaje = document.getElementById("btnCapturarViaje");
 let btnMostrarResumenViaje = document.getElementById("btnMostrarResumenViaje");
 let btnPlanPago = document.getElementById("btnPlanPago");
-
-
-
-
-
-
+let btnGenerarPlanPago = document.getElementById("btnGenerarPlanPago");
 
 
 
@@ -261,15 +241,9 @@ btnMostrarResumenViaje.addEventListener("click", () => {
     mostrarResumenViajeHtml();
 });
 
-
-
-
-
-
-
-
-
-
+btnGenerarPlanPago.addEventListener("click", () => {
+    mostrarPlanPagoHtml();
+});
 
 
 
@@ -302,16 +276,17 @@ function mostrarResumenViajeHtml() {
     let divResumenViaje = document.getElementById("resumenViaje");
 
     const miViajeRecuperado = JSON.parse(localStorage.getItem(MI_VIAJE));
-    const miViaje = new Viaje(miViajeRecuperado.id,
-        miViajeRecuperado.destino,
-        miViajeRecuperado.adultos,
-        miViajeRecuperado.ninios,
-        miViajeRecuperado.dias);
-    
 
-    if(miViaje === null || miViaje === undefined){
+    if(miViajeRecuperado === null || miViajeRecuperado === undefined){
         alert("Vuelve a la opción crea tu viaje")
     } else {
+
+        const miViaje = new Viaje(miViajeRecuperado.id,
+            miViajeRecuperado.destino,
+            miViajeRecuperado.adultos,
+            miViajeRecuperado.ninios,
+            miViajeRecuperado.dias);
+
         divResumenViaje.innerHTML = `
         <div class="card mb-3" style="max-width: 480px;">
             <div class="row g-0">
@@ -352,43 +327,54 @@ function mostrarValorViajeModalHtml(valorViaje) {
     A cuantas cuotas quieres dividir tu viaje</p> `;
 }
 
+function mostrarPlanPagoHtml() {
+    const miViajeRecuperado = JSON.parse(localStorage.getItem(MI_VIAJE));
 
+    if(miViajeRecuperado === null || miViajeRecuperado === undefined){
+        alert("Vuelve a la opción crea tu viaje")
+    } else {
+        const miViaje = new Viaje(miViajeRecuperado.id,
+            miViajeRecuperado.destino,
+            miViajeRecuperado.adultos,
+            miViajeRecuperado.ninios,
+            miViajeRecuperado.dias);
 
-// function mostrarCuotasHtml() {
-//     let divPlanPago = document.getElementById("planPago");
+        let divPlanPago = document.getElementById("planPago");
+        const txtCuotas = document.getElementById("txtCuotas");
+        const numeroDeCuotas = parseInt(txtCuotas.value)
 
-//     divPlanPago.innerHTML = `
-//         <table class="table">
-//             <thead>
-//                 <tr>
-//                     <th scope="col">#</th>
-//                     <th scope="col">Descripción</th>
-//                     <th scope="col">Valor</th>
-//                 </tr>
-//             </thead>
-//             <tbody>
-//                 <tr>
-//                     <th scope="row">1</th>
-//                     <td>Valor de la cuota 1</td>
-//                     <td>25.000</td>
-//                 </tr>
-//                 <tr>
-//                     <th scope="row">2</th>
-//                     <td>Valor de la cuota 2</td>
-//                     <td>25.000</td>
-//                 </tr>
-//                 <tr>
-//                     <th scope="row">3</th>
-//                     <td>Valor de la cuota 3</td>
-//                     <td>25.000</td>
-//                 </tr>
-//                 <tr>
-//                     <th scope="row"></th>
-//                     <td>Total</td>
-//                     <td>75.000</td>
-//                 </tr>
-//             </tbody>
-//         </table>
-//     `;
-// }
+        miViaje.generarPlanDePago(numeroDeCuotas);
 
+        let filas = "";
+
+        for(let miCuota = 1; miCuota <= numeroDeCuotas; miCuota++){
+            filas += `
+            <tr>
+                <th scope="row">${miCuota}</th>
+                <td>Valor de la cuota ${miCuota}</td>
+                <td>${miViaje.valorCuota}</td>
+            </tr>
+            `;
+        }
+
+        divPlanPago.innerHTML = `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${filas}
+                    <tr>
+                        <th scope="row"></th>
+                        <td>Total</td>
+                        <td>${miViaje.valor}</td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
+    }
+}
