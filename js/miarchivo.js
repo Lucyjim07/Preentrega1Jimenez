@@ -75,6 +75,61 @@ const viajes = [viaje1, viaje2, viaje3, viaje4];
 // Guardar viajes en localStorage
 localStorage.setItem(LISTA_VIAJES, JSON.stringify(viajes));
 
+let divViajesReservado = document.getElementById("viajesReservados");
+let txtCiudad = document.getElementById("txtCiudad");
+
+txtCiudad.addEventListener("input", () => {
+    let busqueda = txtCiudad.value;
+
+    if(busqueda === ''){
+        verReservasDeViajes(viajes);
+    } else {
+        buscarPorCiudad(busqueda, viajes);
+    }
+});
+
+
+verReservasDeViajes(viajes);
+
+function verReservasDeViajes(listaDeViajes) {
+
+    divViajesReservado.innerHTML = "";
+    
+    for(let viaje of listaDeViajes) {
+        let divNuevoViaje = document.createElement("div");
+        divNuevoViaje.className = "col-12 col-md-6 col-lg-4 my-3";
+        divNuevoViaje.innerHTML = `
+            <div id="${viaje.id}" class="card mb-3" style="max-width: 480px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="./img/avion.png" class="img-fluid rounded-start" alt="imagen-destino">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h4 class="card-title">Viaje reservado a ${viaje.destino}</h4>
+                            <p class="card-text">Tu paquete de viaje es el siguiente</p>
+                            <p class="card-text mb-1">Adultos: <span class="text-muted">${viaje.adultos}</span></p>
+                            <p class="card-text mb-1">Niños: <span class="text-muted">${viaje.ninios}</span></p>
+                            <p class="card-text mb-1">Días: <span class="text-muted">${viaje.dias}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
+
+        divViajesReservado.appendChild(divNuevoViaje);
+    }
+}
+
+function buscarPorCiudad(ciudadParaBuscar, listaDeViajes){
+
+    let resultadoBusqueda = listaDeViajes.filter(
+        viaje => viaje.destino.toLowerCase().includes(ciudadParaBuscar)
+    );
+
+    verReservasDeViajes(resultadoBusqueda);
+}
+
 // let quieresViajar = prompt("pensando en viajar si o no");
 
 // función principal que ejecuta el simulador de viaje
@@ -231,7 +286,6 @@ let btnGenerarPlanPago = document.getElementById("btnGenerarPlanPago");
 
 
 
-
 // agregar eventos a botones
 btnCapturarViaje.addEventListener("click", () => {
     capturarViaje();
@@ -378,3 +432,18 @@ function mostrarPlanPagoHtml() {
         `;
     }
 }
+
+
+
+
+
+
+let txtCuotas = document.getElementById("txtCuotas");
+
+txtCuotas.addEventListener("mouseout", () => {
+    let value = parseInt(txtCuotas.value);
+
+    if(value > 12) {
+        alert('Valor no permitido');
+    }
+});
