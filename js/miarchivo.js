@@ -88,6 +88,7 @@ let btnGenerarPlanPago = document.getElementById("btnGenerarPlanPago");
 let divViajesReservado = document.getElementById("viajesReservados");
 let txtCiudad = document.getElementById("txtCiudad");
 let divErrorViaje = document.getElementById("errorViaje");
+let btnDescartarViaje = document.getElementById("btnDescartarViaje");
 
 
 
@@ -117,6 +118,12 @@ txtCiudad.addEventListener("input", () => {
         buscarPorCiudad(busqueda, viajes);
     }
 });
+
+btnDescartarViaje.addEventListener("click", ()=> {
+    descartarViaje();
+});
+
+
 
 
 // funciones de los botones
@@ -259,13 +266,8 @@ function agregarViajeReservado(miViaje, listaDeViajes) {
     listaDeViajes.push(miViaje);
     verReservasDeViajesHtml(listaDeViajes);
 
-    let divResumenViaje = document.getElementById("resumenViaje");
-    divResumenViaje.innerHTML = "";
+    descartarViaje();
 
-    let divPlanPago = document.getElementById("planPago");
-    divPlanPago.innerHTML = "";
-
-    localStorage.removeItem(MI_VIAJE);
     localStorage.setItem(LISTA_VIAJES, JSON.stringify(listaDeViajes));
 }
 
@@ -314,6 +316,16 @@ function mostrarErrorViajeHtml(){
     <div class="alert alert-danger" role="alert">
         Vuelve a la opción crea tu viaje
     </div>`;
+}
+
+function descartarViaje(){
+    let divresumenViaje = document.getElementById("resumenViaje");
+    divresumenViaje.innerHTML = "";
+
+    let divplanPago = document.getElementById("planPago");
+    divplanPago.innerHTML = "";
+
+    localStorage.removeItem(MI_VIAJE);
 }
 
 verReservasDeViajesHtml(viajes);
