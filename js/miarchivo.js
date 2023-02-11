@@ -70,223 +70,32 @@ const viaje3 = new Viaje(3, "Santa Marta", 4, 0, 4);
 const viaje4 = new Viaje(4, "Medellin", 4, 1, 4);
 
 // Crear un areglo de objetos tipo viaje
-const viajes = [viaje1, viaje2, viaje3, viaje4];
+let viajes = [viaje1, viaje2, viaje3, viaje4];
 
 // Guardar viajes en localStorage
-localStorage.setItem(LISTA_VIAJES, JSON.stringify(viajes));
-
-let divViajesReservado = document.getElementById("viajesReservados");
-let txtCiudad = document.getElementById("txtCiudad");
-
-txtCiudad.addEventListener("input", () => {
-    let busqueda = txtCiudad.value;
-
-    if(busqueda === ''){
-        verReservasDeViajes(viajes);
-    } else {
-        buscarPorCiudad(busqueda, viajes);
-    }
-});
-
-
-verReservasDeViajes(viajes);
-
-function verReservasDeViajes(listaDeViajes) {
-
-    divViajesReservado.innerHTML = "";
-    
-    for(let viaje of listaDeViajes) {
-        let divNuevoViaje = document.createElement("div");
-        divNuevoViaje.className = "col-12 col-md-6 col-lg-4 my-3";
-        divNuevoViaje.innerHTML = `
-            <div id="${viaje.id}" class="card mb-3" style="max-width: 480px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="./img/avion.png" class="img-fluid rounded-start" alt="imagen-destino">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h4 class="card-title">Viaje reservado a ${viaje.destino}</h4>
-                            <p class="card-text">Tu paquete de viaje es el siguiente</p>
-                            <p class="card-text mb-1">Adultos: <span class="text-muted">${viaje.adultos}</span></p>
-                            <p class="card-text mb-1">Niños: <span class="text-muted">${viaje.ninios}</span></p>
-                            <p class="card-text mb-1">Días: <span class="text-muted">${viaje.dias}</span></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `
-
-        divViajesReservado.appendChild(divNuevoViaje);
-    }
+if(localStorage.getItem(LISTA_VIAJES)){
+    viajes = JSON.parse(localStorage.getItem(LISTA_VIAJES))
+} else {
+    localStorage.setItem(LISTA_VIAJES, JSON.stringify(viajes));
 }
-
-function buscarPorCiudad(ciudadParaBuscar, listaDeViajes){
-
-    let resultadoBusqueda = listaDeViajes.filter(
-        viaje => viaje.destino.toLowerCase().includes(ciudadParaBuscar)
-    );
-
-    verReservasDeViajes(resultadoBusqueda);
-}
-
-// let quieresViajar = prompt("pensando en viajar si o no");
-
-// función principal que ejecuta el simulador de viaje
-// if (quieresViajar == "si") {
-//     siViajar();
-// } else {
-//     finalizar();
-// }
-
-// Proceso principal viajar
-// function siViajar() {
-//     mostrarMenu();
-// }
-
-// Proceso finalizar el programa
-// function finalizar() {
-//     console.log("Vuelve pronto");
-//     alert("Vuelva pronto");
-// }
-
-// // Capturar los datos del viaje
-// // destino, adultos, niños y días
-// function capturarDatosDelViaje() {
-//     // agregar destinos nacionales e internacionales con un menú
-//     let destino = prompt(`Ingresa tu destino:
-//         Cartagena 
-//         Cali
-//         Medellin
-//         Santa Marta`);
-//     let cantidadDeAdultos = parseInt(prompt("Cuantas adultos piensan viajar"));
-//     let cantidadDeNinios = parseInt(prompt("Cuantas niños piensan viajar"));
-//     let cantidadDeDias = parseInt(prompt("Cuantos días piensas viajar"));
-
-//     const miViaje = new Viaje(
-//         viajes.length + 1,
-//         destino,
-//         cantidadDeAdultos,
-//         cantidadDeNinios,
-//         cantidadDeDias
-//     );
-
-//     return miViaje;
-// }
-
-// // Menú de la aplicación
-// function mostrarMenu() {
-//     let mostrarMenu = true;
-//     let viajeCapturado;
-//     do {
-//         let opcionMenu = prompt(`Ingrese la opción deseada
-//         1 - Crea tu viaje
-//         2 - Resumen del viaje
-//         3 - Plan de pago
-//         4 - Reservar viaje
-//         5 - Mostrar viajes por ciudad
-//         0 - Salir del menu`);
-//         switch (opcionMenu) {
-//             case "1":
-//                 viajeCapturado = capturarDatosDelViaje();
-//                 break;
-//             case "2":
-//                 if(viajeCapturado === null || viajeCapturado === undefined){
-//                     alert("No has creado tu viaje, ve a la opción Crea tu viaje");
-//                 } else {
-//                     viajeCapturado.mostrarInformacion();
-//                     viajeCapturado.calcularValor();
-//                 }
-//                 break;
-//             case "3":
-//                 if(viajeCapturado === null || viajeCapturado === undefined){
-//                     alert("No has creado tu viaje, ve a la opción Crea tu viaje");
-//                 } else {
-//                     viajeCapturado.generarPlanDePago();
-//                 }
-//                 break;
-//             case "4":
-//                 reservarViaje(viajeCapturado);
-//                 break;
-//             case "5":
-//                 filtrarViajes();                
-//                 break; 
-//             case "0":
-//                 finalizar();
-//                 mostrarMenu = false;
-//                 break;
-//             default:
-//                 console.log("Opcion no Valida");
-//                 break;
-//         }
-//     } while (mostrarMenu);
-// }
-
-// // Mostrar resumen de viaje.
-// // Ejecuta las funciones mostrarInformacionDeViaje y calcularValorViaje
-// function mostrarResumenDeViaje(viaje) {
-//     if (viaje === null || viaje === undefined) {
-//         alert("No has creado tu viaje, ve a la opción Crea tu viaje");
-//     } else {
-//         viaje.mostrarInformacion();
-//         viaje.calcularValor();
-//     }
-// }
-
-// agregar un viaje recien capturado al arreglo de los viajes
-function reservarViaje(viaje) {
-    const reservar = prompt ('Quire realizar una reserva si o no');
-    if (reservar === "si") {
-        viajes.push(viaje)
-    }else{
-        alert ('Vuelve al menu inicial y crea tu viaje')
-    } 
-    mostrarViajesReservados(viajes);
-}
-
-// muestra los viajes que se han reservado (que se han agregado al arreglo de viajes)
-function mostrarViajesReservados(viajes) {
-    console.log("Los viajes reservados son:");
-    for (let viaje of viajes) {
-        viaje.mostrarInformacion();
-    }
-}
-
-function filtrarViajes() {
-    const ciudad = prompt(`¿Por qué ciudad quiere hacer el filtro?
-        Cartagena
-        Cali
-        Medellin
-        Santa Marta`);
-
-    const viajesPorCiudad = viajes.filter((viaje) => viaje.destino === ciudad);
-    
-    if (viajesPorCiudad.length === 0) {
-        console.log(`No existen viajes a la ciudad ${ciudad}`);
-    } else {
-        console.log("El resultado de su busqueda es:");
-        for (let viaje of viajesPorCiudad) {
-            viaje.mostrarInformacion();
-        }
-    }
-}
-
-
-
-
-
 
 // obtener elementos
+let btnModalCrearViaje = document.getElementById("btnModalCrearViaje");
 let btnCapturarViaje = document.getElementById("btnCapturarViaje");
 let btnMostrarResumenViaje = document.getElementById("btnMostrarResumenViaje");
 let btnPlanPago = document.getElementById("btnPlanPago");
 let btnGenerarPlanPago = document.getElementById("btnGenerarPlanPago");
-
-
+let divViajesReservado = document.getElementById("viajesReservados");
+let txtCiudad = document.getElementById("txtCiudad");
+let divErrorViaje = document.getElementById("errorViaje");
 
 
 
 // agregar eventos a botones
+btnModalCrearViaje.addEventListener("click", () => {
+    divErrorViaje.innerHTML = "";
+});
+
 btnCapturarViaje.addEventListener("click", () => {
     capturarViaje();
 });
@@ -299,6 +108,15 @@ btnGenerarPlanPago.addEventListener("click", () => {
     mostrarPlanPagoHtml();
 });
 
+txtCiudad.addEventListener("input", () => {
+    let busqueda = txtCiudad.value;
+
+    if(busqueda === ''){
+        verReservasDeViajesHtml(viajes);
+    } else {
+        buscarPorCiudad(busqueda, viajes);
+    }
+});
 
 
 // funciones de los botones
@@ -332,7 +150,7 @@ function mostrarResumenViajeHtml() {
     const miViajeRecuperado = JSON.parse(localStorage.getItem(MI_VIAJE));
 
     if(miViajeRecuperado === null || miViajeRecuperado === undefined){
-        alert("Vuelve a la opción crea tu viaje")
+        mostrarErrorViajeHtml()
     } else {
 
         const miViaje = new Viaje(miViajeRecuperado.id,
@@ -370,6 +188,10 @@ function mostrarResumenViajeHtml() {
         });
 
         // boton para hacer la reserva del viaje
+        let btnReservarViaje = document.getElementById("btnReservarViaje");
+        btnReservarViaje.addEventListener("click", () => {
+            agregarViajeReservado(miViaje, viajes);
+        });
 
     }
 }
@@ -433,17 +255,65 @@ function mostrarPlanPagoHtml() {
     }
 }
 
+function agregarViajeReservado(miViaje, listaDeViajes) {
+    listaDeViajes.push(miViaje);
+    verReservasDeViajesHtml(listaDeViajes);
 
+    let divResumenViaje = document.getElementById("resumenViaje");
+    divResumenViaje.innerHTML = "";
 
+    let divPlanPago = document.getElementById("planPago");
+    divPlanPago.innerHTML = "";
 
+    localStorage.removeItem(MI_VIAJE);
+    localStorage.setItem(LISTA_VIAJES, JSON.stringify(listaDeViajes));
+}
 
+function verReservasDeViajesHtml(listaDeViajes) {
 
-let txtCuotas = document.getElementById("txtCuotas");
+    divViajesReservado.innerHTML = "";
+    
+    for(let viaje of listaDeViajes) {
 
-txtCuotas.addEventListener("mouseout", () => {
-    let value = parseInt(txtCuotas.value);
+        let divNuevoViaje = document.createElement("div");
+        divNuevoViaje.className = "col-12 col-md-6 col-lg-4 my-3";
+        divNuevoViaje.innerHTML = `
+            <div id="${viaje.id}" class="card mb-3" style="max-width: 480px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="./img/avion.png" class="img-fluid rounded-start" alt="imagen-destino">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h4 class="card-title">Viaje reservado a ${viaje.destino}</h4>
+                            <p class="card-text">Tu paquete de viaje es el siguiente</p>
+                            <p class="card-text mb-1">Adultos: <span class="text-muted">${viaje.adultos}</span></p>
+                            <p class="card-text mb-1">Niños: <span class="text-muted">${viaje.ninios}</span></p>
+                            <p class="card-text mb-1">Días: <span class="text-muted">${viaje.dias}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
 
-    if(value > 12) {
-        alert('Valor no permitido');
+        divViajesReservado.appendChild(divNuevoViaje);
     }
-});
+}
+
+function buscarPorCiudad(ciudadParaBuscar, listaDeViajes){
+
+    let resultadoBusqueda = listaDeViajes.filter(
+        viaje => viaje.destino.toLowerCase().includes(ciudadParaBuscar)
+    );
+
+    verReservasDeViajesHtml(resultadoBusqueda);
+}
+
+function mostrarErrorViajeHtml(){
+    divErrorViaje.innerHTML = `
+    <div class="alert alert-danger" role="alert">
+        Vuelve a la opción crea tu viaje
+    </div>`;
+}
+
+verReservasDeViajesHtml(viajes);
