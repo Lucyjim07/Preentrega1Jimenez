@@ -86,6 +86,9 @@ function mostrarResumenViajeHtml() {
             miViajeRecuperado.ninios,
             miViajeRecuperado.dias);
 
+        // Desestructuracion
+        const {destino, adultos, ninios, dias} = miViaje;
+
         divResumenViaje.innerHTML = `
         <div class="card mb-3" style="max-width: 480px;">
             <div class="row g-0">
@@ -94,11 +97,11 @@ function mostrarResumenViajeHtml() {
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h4 class="card-title">Disfruta tu viaje a ${miViaje.destino}</h4>
+                        <h4 class="card-title">Disfruta tu viaje a ${destino}</h4>
                         <p class="card-text">Tu paquete de viaje es el siguiente</p>
-                        <p class="card-text mb-1">Adultos: <span class="text-muted">${miViaje.adultos}</span></p>
-                        <p class="card-text mb-1">Niños: <span class="text-muted">${miViaje.ninios}</span></p>
-                        <p class="card-text mb-1">Días: <span class="text-muted">${miViaje.dias}</span></p>
+                        <p class="card-text mb-1">Adultos: <span class="text-muted">${adultos}</span></p>
+                        <p class="card-text mb-1">Niños: <span class="text-muted">${ninios}</span></p>
+                        <p class="card-text mb-1">Días: <span class="text-muted">${dias}</span></p>
                         <a id="btnReservarViaje" href="#" class="btn btn-primary">Reserva tu viaje</a>
                         <a id="btnPlanPago" href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#formularioGenerarPlanPago">Plan de pago</a>
                     </div>
@@ -197,6 +200,9 @@ function verReservasDeViajesHtml(listaDeViajes) {
     
     for(let viaje of listaDeViajes) {
 
+        // Desestructuracion
+        const {destino, adultos, ninios, dias} = viaje;
+
         let divNuevoViaje = document.createElement("div");
         divNuevoViaje.className = "col-12 col-md-6 col-lg-4 my-3";
         divNuevoViaje.innerHTML = `
@@ -207,11 +213,11 @@ function verReservasDeViajesHtml(listaDeViajes) {
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h4 class="card-title">Viaje reservado a ${viaje.destino}</h4>
+                            <h4 class="card-title">Viaje reservado a ${destino}</h4>
                             <p class="card-text">Tu paquete de viaje es el siguiente</p>
-                            <p class="card-text mb-1">Adultos: <span class="text-muted">${viaje.adultos}</span></p>
-                            <p class="card-text mb-1">Niños: <span class="text-muted">${viaje.ninios}</span></p>
-                            <p class="card-text mb-1">Días: <span class="text-muted">${viaje.dias}</span></p>
+                            <p class="card-text mb-1">Adultos: <span class="text-muted">${adultos}</span></p>
+                            <p class="card-text mb-1">Niños: <span class="text-muted">${ninios}</span></p>
+                            <p class="card-text mb-1">Días: <span class="text-muted">${dias}</span></p>
                         </div>
                     </div>
                 </div>
