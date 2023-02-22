@@ -17,3 +17,12 @@ if(localStorage.getItem(LISTA_VIAJES)){
 } else {
     localStorage.setItem(LISTA_VIAJES, JSON.stringify(viajes));
 }
+
+let cupones = [];
+
+const cuponValido = async () => {
+    const respuesta = await fetch("json/cupones.json");
+    const data = await respuesta.json();
+    cupones.push(...data);
+}
+cuponValido();

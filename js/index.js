@@ -9,9 +9,6 @@ let txtCiudad = document.getElementById("txtCiudad");
 let divErrorViaje = document.getElementById("errorViaje");
 let btnDescartarViaje = document.getElementById("btnDescartarViaje");
 
-
-
-
 // agregar eventos a botones
 btnModalCrearViaje.addEventListener("click", () => {
     divErrorViaje.innerHTML = "";
@@ -32,19 +29,16 @@ btnGenerarPlanPago.addEventListener("click", () => {
 txtCiudad.addEventListener("input", () => {
     let busqueda = txtCiudad.value;
 
-    if(busqueda === ''){
+    if (busqueda === "") {
         verReservasDeViajesHtml(viajes);
     } else {
         buscarPorCiudad(busqueda, viajes);
     }
 });
 
-btnDescartarViaje.addEventListener("click", ()=> {
+btnDescartarViaje.addEventListener("click", () => {
     descartarViaje();
 });
-
-
-
 
 // funciones de los botones
 function capturarViaje() {
@@ -52,15 +46,15 @@ function capturarViaje() {
     let txtAdultos = document.getElementById("txtAdultos");
     let txtNinios = document.getElementById("txtNinios");
     let txtDias = document.getElementById("txtDias");
-    
+
     const miViaje = new Viaje(
         viajes.length + 1,
         txtDestino.value,
         parseInt(txtAdultos.value),
         parseInt(txtNinios.value),
         parseInt(txtDias.value)
-    )
-    
+    );
+
     localStorage.setItem(MI_VIAJE, JSON.stringify(miViaje));
 
     let resumenViaje = document.getElementById("resumenViaje");
@@ -68,7 +62,6 @@ function capturarViaje() {
 
     let planPago = document.getElementById("planPago");
     planPago.innerHTML = "";
-
 }
 
 function mostrarResumenViajeHtml() {
@@ -76,18 +69,19 @@ function mostrarResumenViajeHtml() {
 
     const miViajeRecuperado = JSON.parse(localStorage.getItem(MI_VIAJE));
 
-    if(miViajeRecuperado === null || miViajeRecuperado === undefined){
-        mostrarErrorViajeHtml()
+    if (miViajeRecuperado === null || miViajeRecuperado === undefined) {
+        mostrarErrorViajeHtml();
     } else {
-
-        const miViaje = new Viaje(miViajeRecuperado.id,
+        const miViaje = new Viaje(
+            miViajeRecuperado.id,
             miViajeRecuperado.destino,
             miViajeRecuperado.adultos,
             miViajeRecuperado.ninios,
-            miViajeRecuperado.dias);
+            miViajeRecuperado.dias
+        );
 
         // Desestructuracion
-        const {destino, adultos, ninios, dias} = miViaje;
+        const { destino, adultos, ninios, dias } = miViaje;
 
         divResumenViaje.innerHTML = `
         <div class="card mb-3" style="max-width: 480px;">
@@ -107,8 +101,7 @@ function mostrarResumenViajeHtml() {
                     </div>
                 </div>
             </div>
-        </div>`
-        ;
+        </div>`;
 
         // boton para ver el plan de pago
         let btnPlanPago = document.getElementById("btnPlanPago");
@@ -122,7 +115,6 @@ function mostrarResumenViajeHtml() {
         btnReservarViaje.addEventListener("click", () => {
             agregarViajeReservado(miViaje, viajes);
         });
-
     }
 }
 
@@ -136,24 +128,40 @@ function mostrarValorViajeModalHtml(valorViaje) {
 function mostrarPlanPagoHtml() {
     const miViajeRecuperado = JSON.parse(localStorage.getItem(MI_VIAJE));
 
-    if(miViajeRecuperado === null || miViajeRecuperado === undefined){
-        alert("Vuelve a la opción crea tu viaje")
+    if (miViajeRecuperado === null || miViajeRecuperado === undefined) {
+        alert("Vuelve a la opción crea tu viaje");
     } else {
-        const miViaje = new Viaje(miViajeRecuperado.id,
+        const miViaje = new Viaje(
+            miViajeRecuperado.id,
             miViajeRecuperado.destino,
             miViajeRecuperado.adultos,
             miViajeRecuperado.ninios,
-            miViajeRecuperado.dias);
+            miViajeRecuperado.dias
+        );
 
         let divPlanPago = document.getElementById("planPago");
         const txtCuotas = document.getElementById("txtCuotas");
-        const numeroDeCuotas = parseInt(txtCuotas.value)
 
+        const numeroDeCuotas = parseInt(txtCuotas.value);
         miViaje.generarPlanDePago(numeroDeCuotas);
 
-        let filas = "";
+        // procesando cupon de descuento
+        const txtCupon = document.getElementById("txtCupon");
+        const cuponIngresado = txtCupon.value;
 
-        for(let miCuota = 1; miCuota <= numeroDeCuotas; miCuota++){
+        const cuponEncontrado = cupones.find(
+            (cupon) => cupon === cuponIngresado
+        );
+        const valorDescuento = miViaje.valor * 0.2;
+
+        if (cuponEncontrado !== undefined) {
+            miViaje.valor = miViaje.valor - valorDescuento;
+            miViaje.generarPlanDePago(numeroDeCuotas);
+        }
+
+        // generar filas de plan de pago
+        let filas = "";
+        for (let miCuota = 1; miCuota <= numeroDeCuotas; miCuota++) {
             filas += `
             <tr>
                 <th scope="row">${miCuota}</th>
@@ -163,6 +171,19 @@ function mostrarPlanPagoHtml() {
             `;
         }
 
+        // generar fila de descuento
+        const filaDescuento =
+            cuponEncontrado !== undefined
+                ? `
+                <tr>
+                    <td></td>
+                    <td>Descuento</td>
+                    <td>-${valorDescuento}</td>
+                </tr>
+                `
+                : "";
+
+        // generar tabla de plan de pago
         divPlanPago.innerHTML = `
             <table class="table">
                 <thead>
@@ -174,6 +195,7 @@ function mostrarPlanPagoHtml() {
                 </thead>
                 <tbody>
                     ${filas}
+                    ${filaDescuento}
                     <tr>
                         <th scope="row"></th>
                         <td>Total</td>
@@ -195,13 +217,11 @@ function agregarViajeReservado(miViaje, listaDeViajes) {
 }
 
 function verReservasDeViajesHtml(listaDeViajes) {
-
     divViajesReservado.innerHTML = "";
-    
-    for(let viaje of listaDeViajes) {
 
+    for (let viaje of listaDeViajes) {
         // Desestructuracion
-        const {destino, adultos, ninios, dias} = viaje;
+        const { destino, adultos, ninios, dias } = viaje;
 
         let divNuevoViaje = document.createElement("div");
         divNuevoViaje.className = "col-12 col-md-6 col-lg-4 my-3";
@@ -222,29 +242,28 @@ function verReservasDeViajesHtml(listaDeViajes) {
                     </div>
                 </div>
             </div>
-        `
+        `;
 
         divViajesReservado.appendChild(divNuevoViaje);
     }
 }
 
-function buscarPorCiudad(ciudadParaBuscar, listaDeViajes){
-
-    let resultadoBusqueda = listaDeViajes.filter(
-        viaje => viaje.destino.toLowerCase().includes(ciudadParaBuscar)
+function buscarPorCiudad(ciudadParaBuscar, listaDeViajes) {
+    let resultadoBusqueda = listaDeViajes.filter((viaje) =>
+        viaje.destino.toLowerCase().includes(ciudadParaBuscar)
     );
 
     verReservasDeViajesHtml(resultadoBusqueda);
 }
 
-function mostrarErrorViajeHtml(){
+function mostrarErrorViajeHtml() {
     divErrorViaje.innerHTML = `
     <div class="alert alert-danger" role="alert">
         Vuelve a la opción crea tu viaje
     </div>`;
 }
 
-function descartarViaje(){
+function descartarViaje() {
     let divresumenViaje = document.getElementById("resumenViaje");
     divresumenViaje.innerHTML = "";
 
