@@ -87,7 +87,9 @@ function mostrarResumenViajeHtml() {
         <div class="card mb-3" style="max-width: 480px;">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img src="./img/avion.png" class="img-fluid rounded-start" alt="imagen-destino">
+                    <div class= "contenedor-destino">
+                        <img src="./img/${destino}.jpg" class="img-destino" alt="imagen-destino">
+                    </div>    
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
@@ -229,7 +231,9 @@ function verReservasDeViajesHtml(listaDeViajes) {
             <div id="${viaje.id}" class="card mb-3" style="max-width: 480px;">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="./img/avion.png" class="img-fluid rounded-start" alt="imagen-destino">
+                        <div class="contenedor-destino">
+                            <img src="./img/${destino}.jpg" class="img-destino"  alt="imagen-destino">
+                        </div>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
@@ -257,10 +261,20 @@ function buscarPorCiudad(ciudadParaBuscar, listaDeViajes) {
 }
 
 function mostrarErrorViajeHtml() {
+    
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Algo salio mal',
+        footer: '<a href="">Vuelve a la opción crea tu viaje</a>'
+      })
+    
+    
+    /*
     divErrorViaje.innerHTML = `
-    <div class="alert alert-danger" role="alert">
+     <div class="alert alert-danger" role="alert">
         Vuelve a la opción crea tu viaje
-    </div>`;
+    </div>`;*/
 }
 
 function descartarViaje() {
